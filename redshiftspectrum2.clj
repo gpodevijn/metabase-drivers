@@ -1,5 +1,5 @@
 (ns metabase.driver.redshiftspectrum
-  "Amazon Redshift Driver."
+  "Amazon Redshift (Spectrum enabled) Driver."
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [honeysql.core :as hsql]
@@ -53,17 +53,6 @@
           AND source_column.attnum = ANY(c.conkey)
           AND dest_column.attnum   = ANY(c.confkey)")
 
-(defn- describe-external-databases [database]
-  "Fetch the external tables used by Redshift Spectrum"
-  (set (jdbc/query (sql-jdbc.conn/db->pooled-connection-spec database)
-                   ["SELECT schemaname as \"schema\",
-                                     tablename as \"name\"
-                             FROM svv_external_tables"
-                    ])))
-(defmethod driver/describe-database :redshiftspectrum
-  [driver database]
-  (update (sql-jdbc.sync/describe-database driver database) :tables (u/rpartial set/union (describe-external-databases database))))
-
 (defmethod driver/describe-table-fks :redshiftspectrum
   [_ database table]
   (set (for [fk (jdbc/query (sql-jdbc.conn/db->pooled-connection-spec database)
@@ -91,6 +80,17 @@
   [& args]
   (apply driver.common/current-db-time args))
 
+(defn- describe-external-databases [database]
+  "Fetch the external tables used by Redshift Spectrum"
+  (set (jdbc/query (sql-jdbc.conn/db->pooled-connection-spec database)
+                   ["SELECT schemaname as \"schema\",
+                                     tablename as \"name\"
+                             FROM svv_external_tables"
+                    ])))
+
+(defmethod driver/describe-database :redshiftspectrum
+  [driver database]
+  (update (sql-jdbc.sync/describe-database driver database) :tables (u/rpartial set/union (describe-external-databases database))))
 
 ;;; +----------------------------------------------------------------------------------------------------------------+
 ;;; |                                           metabase.driver.sql impls                                            |
@@ -129,7 +129,7 @@
    (dissoc opts :host :port :db)))
 
 (prefer-method
- sql-jdbc.execute/read-column
+ sql-jdbc.execute/read-column-thunk
  [::legacy/use-legacy-classes-for-read-and-set Types/TIMESTAMP]
  [:postgres Types/TIMESTAMP])
 

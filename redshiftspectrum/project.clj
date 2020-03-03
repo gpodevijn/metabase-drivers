@@ -5,7 +5,7 @@
   [["redshift" "https://s3.amazonaws.com/redshift-maven-repository/release"]]
 
 
-  dependencies
+  :dependencies
   [[com.amazon.redshift/redshift-jdbc42-no-awssdk "1.2.36.1060"]]
 
   :profiles
@@ -17,7 +17,6 @@
    :uberjar
    {auto-clean    true
     :aot           :all
-    :omit-source   true
     :javac-options ["-target" "1.8", "-source" "1.8"]
     :target-path   "target/%s"
     :uberjar-name  "redshiftspectrum.metabase-driver.jar"}})
