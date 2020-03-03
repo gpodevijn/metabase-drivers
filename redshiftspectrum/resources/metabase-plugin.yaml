@@ -27,4 +27,4 @@ init:
   - step: load-namespace
     namespace: metabase.driver.redshiftspectrum
   - step: register-jdbc-driver
-    class: com.amazon.redshift.jdbc.Driver
+    class: com.amazon.redshift.jdbc42.Driver
