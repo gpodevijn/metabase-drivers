@@ -1,12 +1,12 @@
 info:
-  name: Metabase Redshift (Spectrum enabled) Driver
+  name: Metabase Redshift (Spectrum enabled 2) Driver
   version: 1.0.0-SNAPSHOT-1.2.36.1060
   description: Allows Metabase to connect to Redshift databases. This driver supports external tables.
 driver:
   name: redshiftspectrum
-  display-name: Amazon Redshift Spectrum enabled
+  display-name: Amazon Redshift Spectrum enabled 2
   lazy-load: true
-  parent: postgres
+  parent: redshift
   connection-properties:
     - merge:
         - host
@@ -23,7 +23,7 @@ driver:
   connection-properties-include-tunnel-config: true
 init:
   - step: load-namespace
-    namespace: metabase.driver.postgres
+    namespace: metabase.driver.redshift
   - step: load-namespace
     namespace: metabase.driver.redshiftspectrum
   - step: register-jdbc-driver
