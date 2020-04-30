@@ -1,5 +1,5 @@
 (ns metabase.driver.redshiftspectrum
-  "Amazon Redshift Driver (Spectrum enabled 2)."
+  "Amazon Redshift Driver (Spectrum enabled)."
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [honeysql.core :as hsql]
