@@ -6,7 +6,7 @@ driver:
   name: redshiftspectrum
   display-name: Amazon Redshift Spectrum enabled
   lazy-load: true
-  parent: redshift
+  parent: postgres
   connection-properties:
     - merge:
         - host
@@ -23,8 +23,8 @@ driver:
   connection-properties-include-tunnel-config: true
 init:
   - step: load-namespace
-    namespace: metabase.driver.redshift
+    namespace: metabase.driver.postgres
   - step: load-namespace
     namespace: metabase.driver.redshiftspectrum
   - step: register-jdbc-driver
-    class: com.amazon.redshift.jdbc42.Driver
+    class: com.amazon.redshift.jdbc.Driver
